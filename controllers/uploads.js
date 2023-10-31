@@ -1,11 +1,19 @@
+const fs = require('fs');
 const {response,request}= require('express')
 
 const uploadImage=(req=request,res=response)=>{
 
+  const name=String(req.body.name.split('uploads/')[1]) 
+  const directoryPath = __dirname.split('controllers')[0]+'uploads/'+name ;
+  if(name!==req.file.filename){
+    fs.unlink(directoryPath , (err) => {
+      console.log("Delete File successfully.");
+  });
+  }
   try {
     return res.json({
       ok:true,
-      data:`http://localhost:3001/uploads/${req.file.filename}`
+      data:`${process.env.BASE_URL}:${process.env.PORT}/uploads/${req.file.filename}`
     })
     
   } catch (error) {
