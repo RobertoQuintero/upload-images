@@ -4,16 +4,21 @@ const {response,request}= require('express')
 const uploadImage=(req=request,res=response)=>{
 
   const name=String(req.body.name.split('uploads/')[1]) 
+  const company=String(req.body.company) 
   const directoryPath = __dirname.split('controllers')[0]+'uploads/'+name ;
   
   // console.log(req.file.filename)
   // console.log(name)
+  // console.log(company)
   // return
 
   if(name!==req.file.filename){
-    fs.unlink(directoryPath , (err) => {
-      console.log("Delete File successfully.");
-  });
+    if(!company){
+      fs.unlink(directoryPath , (err) => {
+        console.log("Delete File successfully.");
+    });
+
+    }
   }
   try {
     return res.json({
